@@ -1,4 +1,3 @@
-import { loginToken } from "./LoginAction";
 import { LOGIN_TOKEN } from "./LoginType";
 const initialState = {
   token: "",

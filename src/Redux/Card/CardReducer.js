@@ -1,4 +1,3 @@
-import { cardAdd } from "./CardAction";
 import { CARD_ADD } from "./CardType";
 const initialState = {
   error: "no error",

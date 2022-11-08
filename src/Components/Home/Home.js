@@ -5,27 +5,16 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./Home.css";
 
 function Home() {
+  function handleSubmit(e) {
+    e.preventDefault();
+  }
   return (
     <div>
       <ul id="demo1">
-        <li>
+        <li className="mySlides">
           <img src="images/11.jpg" alt="" />
-
           <div className="slide-desc">
             <h3>Buy Rice Products Are Now On Line With Us</h3>
-          </div>
-        </li>
-        <li>
-          <img src="images/22.jpg" alt="" />
-          <div className="slide-desc">
-            <h3>Whole Spices Products Are Now On Line With Us</h3>
-          </div>
-        </li>
-
-        <li>
-          <img src="images/44.jpg" alt="" />
-          <div className="slide-desc">
-            <h3>Whole Spices Products Are Now On Line With Us</h3>
           </div>
         </li>
       </ul>
@@ -124,7 +113,7 @@ function Home() {
                                   </h4>
                                 </div>
                                 <div className="snipcart-details top_brand_home_details">
-                                  <form action="#" method="post">
+                                  <form onSubmit={handleSubmit}>
                                     <fieldset>
                                       <input
                                         type="hidden"
@@ -231,7 +220,7 @@ function Home() {
                                   </h4>
                                 </div>
                                 <div className="snipcart-details top_brand_home_details">
-                                  <form action="#" method="post">
+                                  <form onSubmit={handleSubmit}>
                                     <fieldset>
                                       <input
                                         type="hidden"
@@ -342,7 +331,7 @@ function Home() {
                                   </h4>
                                 </div>
                                 <div className="snipcart-details top_brand_home_details">
-                                  <form action="#" method="post">
+                                  <form onSubmit={handleSubmit}>
                                     <fieldset>
                                       <input
                                         type="hidden"
@@ -452,7 +441,7 @@ function Home() {
                                   </h4>
                                 </div>
                                 <div className="snipcart-details top_brand_home_details">
-                                  <form action="#" method="post">
+                                  <form onSubmit={handleSubmit}>
                                     <fieldset>
                                       <input
                                         type="hidden"
@@ -559,7 +548,7 @@ function Home() {
                                   </h4>
                                 </div>
                                 <div className="snipcart-details top_brand_home_details">
-                                  <form action="#" method="post">
+                                  <form onSubmit={handleSubmit}>
                                     <fieldset>
                                       <input
                                         type="hidden"
@@ -677,7 +666,7 @@ function Home() {
                                   </h4>
                                 </div>
                                 <div className="snipcart-details top_brand_home_details">
-                                  <form action="#" method="post">
+                                  <form onSubmit={handleSubmit}>
                                     <fieldset>
                                       <input
                                         type="hidden"
@@ -801,7 +790,7 @@ function Home() {
                                   </h4>
                                 </div>
                                 <div className="snipcart-details top_brand_home_details">
-                                  <form action="#" method="post">
+                                  <form onSubmit={handleSubmit}>
                                     <fieldset>
                                       <input
                                         type="hidden"
@@ -908,7 +897,7 @@ function Home() {
                                   </h4>
                                 </div>
                                 <div className="snipcart-details top_brand_home_details">
-                                  <form action="#" method="post">
+                                  <form onSubmit={handleSubmit}>
                                     <fieldset>
                                       <input
                                         type="hidden"
@@ -1026,7 +1015,7 @@ function Home() {
                                   </h4>
                                 </div>
                                 <div className="snipcart-details top_brand_home_details">
-                                  <form action="#" method="post">
+                                  <form onSubmit={handleSubmit}>
                                     <fieldset>
                                       <input
                                         type="hidden"
@@ -1140,7 +1129,7 @@ function Home() {
                                   </h4>
                                 </div>
                                 <div className="snipcart-details top_brand_home_details">
-                                  <form action="#" method="post">
+                                  <form onSubmit={handleSubmit}>
                                     <fieldset>
                                       <input
                                         type="hidden"
@@ -1251,7 +1240,7 @@ function Home() {
                                   </h4>
                                 </div>
                                 <div className="snipcart-details top_brand_home_details">
-                                  <form action="#" method="post">
+                                  <form onSubmit={handleSubmit}>
                                     <fieldset>
                                       <input
                                         type="hidden"
@@ -1362,7 +1351,7 @@ function Home() {
                                   </h4>
                                 </div>
                                 <div className="snipcart-details top_brand_home_details">
-                                  <form action="#" method="post">
+                                  <form onSubmit={handleSubmit}>
                                     <fieldset>
                                       <input
                                         type="hidden"
@@ -1697,7 +1686,7 @@ function Home() {
                           </h4>
                         </div>
                         <div className="snipcart-details top_brand_home_details">
-                          <form action="#" method="post">
+                          <form onSubmit={handleSubmit}>
                             <fieldset>
                               <input type="hidden" name="cmd" value="_cart" />
                               <input type="hidden" name="add" value="1" />
@@ -1788,7 +1777,7 @@ function Home() {
                           </h4>
                         </div>
                         <div className="snipcart-details top_brand_home_details">
-                          <form action="#" method="post">
+                          <form onSubmit={handleSubmit}>
                             <fieldset>
                               <input type="hidden" name="cmd" value="_cart" />
                               <input type="hidden" name="add" value="1" />
@@ -1890,7 +1879,7 @@ function Home() {
                           </h4>
                         </div>
                         <div className="snipcart-details top_brand_home_details">
-                          <form action="#" method="post">
+                          <form onSubmit={handleSubmit}>
                             <fieldset>
                               <input type="hidden" name="cmd" value="_cart" />
                               <input type="hidden" name="add" value="1" />
@@ -1981,7 +1970,7 @@ function Home() {
                           </h4>
                         </div>
                         <div className="snipcart-details top_brand_home_details">
-                          <form action="#" method="post">
+                          <form onSubmit={handleSubmit}>
                             <fieldset>
                               <input type="hidden" name="cmd" value="_cart" />
                               <input type="hidden" name="add" value="1" />
