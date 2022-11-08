@@ -1,0 +1,7090 @@
+{
+	"info": {
+		"_postman_id": "4f480741-8c69-40b9-b271-99954e69c8cb",
+		"name": "Sewa v4 main",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12040321"
+	},
+	"item": [
+		{
+			"name": "no auth (Runner)",
+			"item": [
+				{
+					"name": "Product",
+					"item": [
+						{
+							"name": "Site Configs",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Status code should be 200', () => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"})\r",
+											"\r",
+											"let jsonData = JSON.parse(responseBody);\r",
+											"console.log(jsonData.data.warehouse[0].id);\r",
+											"pm.environment.set('Warehouse-Id', jsonData.data.warehouse[0].id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/api/v4/config",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"v4",
+										"config"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get all Products",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Check status code is 200', () => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"})\r",
+											"\r",
+											"pm.test('Check if there are products available or not', () => {\r",
+											"    const jsonData = JSON.parse(responseBody);\r",
+											"    pm.expect(jsonData.data.length).to.be.greaterThan(1);\r",
+											"    if (jsonData.data.length >= 1) {\r",
+											"        pm.environment.set('productId', jsonData.data[0].id);\r",
+											"        pm.environment.set('priceId', jsonData.data[0].unitPrice[0].id);\r",
+											"    }\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Warehouse-Id",
+										"value": "{{Warehouse-Id}}",
+										"type": "text"
+									},
+									{
+										"key": "perPage",
+										"value": "10",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "Offer",
+										"value": "1",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{baseURL}}/api/v4/product?allProduct=1",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"v4",
+										"product"
+									],
+									"query": [
+										{
+											"key": "categoryId",
+											"value": "amul-dairy-productFrB",
+											"disabled": true
+										},
+										{
+											"key": "page",
+											"value": "1",
+											"disabled": true
+										},
+										{
+											"key": "perPage",
+											"value": "5",
+											"disabled": true
+										},
+										{
+											"key": "query",
+											"value": "Chicken Chilly",
+											"disabled": true
+										},
+										{
+											"key": "restaurant_open_status",
+											"value": "1",
+											"disabled": true
+										},
+										{
+											"key": "rating",
+											"value": "4",
+											"disabled": true
+										},
+										{
+											"key": "allProduct",
+											"value": "1"
+										},
+										{
+											"key": "minPrice",
+											"value": "1001",
+											"disabled": true
+										},
+										{
+											"key": "maxPrice",
+											"value": "3000",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get product by id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Check status code is 200', () => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Warehouse-Id",
+										"value": "{{Warehouse-Id}}",
+										"type": "text"
+									},
+									{
+										"key": "",
+										"value": "",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{baseURL}}/api/v4/product/{{productId}}",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"v4",
+										"product",
+										"{{productId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get all Category by Product Searched",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "warehouseId",
+										"value": "13",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseURL}}/api/v4/product-search?perPage=20&query=robproduct",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"v4",
+										"product-search"
+									],
+									"query": [
+										{
+											"key": "perPage",
+											"value": "20"
+										},
+										{
+											"key": "query",
+											"value": "robproduct"
+										},
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Category",
+					"item": [
+						{
+							"name": "Site Configs",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let jsonData = JSON.parse(responseBody);\r",
+											"console.log(jsonData.data.warehouse[0].id);\r",
+											"pm.environment.set('Warehouse-Id', jsonData.data.warehouse[0].id);\r",
+											"\r",
+											"pm.test('Status code should be 200',()=>{\r",
+											"    pm.response.to.have.status(200);\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/api/v4/config",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"v4",
+										"config"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get all categories",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Status code should be 200', () => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"})\r",
+											"\r",
+											"pm.test('Status code should not be 404', () => {\r",
+											"    pm.response.to.not.have.status(404);\r",
+											"})\r",
+											"\r",
+											"let jsonData = JSON.parse(responseBody)\r",
+											"pm.environment.set('category-id', jsonData.data[0].id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Warehouse-Id",
+										"value": "{{Warehouse-Id}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseURL}}/api/v4/category",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"v4",
+										"category"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "2",
+											"disabled": true
+										},
+										{
+											"key": "perPage",
+											"value": "5",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Category By Id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Status code should be 200', () => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"})\r",
+											"\r",
+											"pm.test('Status code should not be 404', () => {\r",
+											"    pm.response.to.not.have.status(404);\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Warehouse-Id",
+										"value": "{{Warehouse-Id}}",
+										"type": "text"
+									},
+									{
+										"key": "perPage",
+										"value": "20",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseURL}}/api/v4/category/{{category-id}}",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"v4",
+										"category",
+										"{{category-id}}"
+									],
+									"query": [
+										{
+											"key": "include_products",
+											"value": "true",
+											"disabled": true
+										},
+										{
+											"key": "query",
+											"value": "momo",
+											"disabled": true
+										},
+										{
+											"key": "restaurant_open_status",
+											"value": "1",
+											"disabled": true
+										},
+										{
+											"key": "rating",
+											"value": "3.5",
+											"disabled": true
+										},
+										{
+											"key": "page",
+											"value": "",
+											"disabled": true
+										},
+										{
+											"key": "perPage",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User login Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);\r",
+											"pm.test(\"Status code is 200\", () => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    pm.response.to.not.have.status(401);\r",
+											"});\r",
+											"pm.environment.set(\"access_token\", `Bearer ${jsonData.access_token}`);\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "client_id",
+											"value": "{{client_id}}",
+											"type": "text"
+										},
+										{
+											"key": "client_secret",
+											"value": "{{client_secret}}",
+											"type": "text"
+										},
+										{
+											"key": "grant_type",
+											"value": "{{grant_type}}",
+											"type": "text"
+										},
+										{
+											"key": "username",
+											"value": "{{username}}",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "{{password}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{baseURL}}/{{auth}}/login",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"{{auth}}",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Rating Copy",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{access_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"category_id\": 295,\r\n  \"rating\": 3,\r\n  \"review\": \"revkjsdjsjdskj  jskjdsk  sdjskdjsk sd\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/api/v4/rating",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"v4",
+										"rating"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Config",
+					"item": [
+						{
+							"name": "Site Configs",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Status code should be 200',()=>{\r",
+											"    pm.response.to.have.status(200);\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/api/v4/config",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"v4",
+										"config"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Home",
+					"item": [
+						{
+							"name": "Site Configs Copy 2",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let jsonData = JSON.parse(responseBody);\r",
+											"console.log(jsonData.data.warehouse[0].id);\r",
+											"pm.environment.set('Warehouse-Id', jsonData.data.warehouse[0].id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/api/v4/config",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"v4",
+										"config"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Homepage Info",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Check status code is 200', () => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"})\r",
+											"\r",
+											"const jsonData = JSON.parse(responseBody);\r",
+											"if (jsonData.data.appCategories.length > 0) {\r",
+											"    console.log('There is at lease one active app category')\r",
+											"    pm.environment.set('appCategory-id', jsonData.data.appCategories[0].id);\r",
+											"}\r",
+											"else {\r",
+											"    console.log('There are not active app category present');\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Warehouse-Id",
+										"value": "{{Warehouse-Id}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseURL}}/api/v4/home",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"v4",
+										"home"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get  new Homepage",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Check status code is 200', () => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"})\r",
+											"\r",
+											"// const jsonData = JSON.parse(responseBody);\r",
+											"// if (jsonData.data.appCategories.length > 0) {\r",
+											"//     console.log('There is at lease one active app category')\r",
+											"//     pm.environment.set('appCategory-id', jsonData.data.appCategories[0].id);\r",
+											"// }\r",
+											"// else {\r",
+											"//     console.log('There are not active app category present');\r",
+											"// }"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Warehouse-Id",
+										"value": "1",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseURL}}/api/v4/newhome",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"v4",
+										"newhome"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get App Category Data",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Check status code is 200', () => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"})\r",
+											"\r",
+											"pm.test('Check whether the app category has products or not', () => {\r",
+											"    const jsonData = JSON.parse(responseBody);\r",
+											"    pm.expect(jsonData.data.length).to.be.greaterThan(0);\r",
+											"    console.log('There are more than one product in the app category');\r",
+											"})\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Warehouse-Id",
+										"value": "{{Warehouse-Id}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseURL}}/api/v4/app-category/{{appCategory-id}}",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"v4",
+										"app-category",
+										"{{appCategory-id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get New App Category Data Copy",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Api-Key",
+										"value": "d3746f972df5899830127946cae672a9a98b75d052a5b031d27bf00b8a81bd51",
+										"type": "text"
+									},
+									{
+										"key": "Applayout-Id",
+										"value": "14",
+										"type": "text"
+									},
+									{
+										"key": "Api-Key",
+										"value": "",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{baseURL}}/api/v4/new-app-category/195",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"v4",
+										"new-app-category",
+										"195"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Payment Method",
+					"item": [
+						{
+							"name": "Get Payment Methods",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Check the status code is 200', () => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"})\r",
+											"\r",
+											"pm.test('Check the status code to not be 404', () => {\r",
+											"    pm.response.to.not.have.status(404);\r",
+											"})\r",
+											"\r",
+											"//Check if there is exactly one default payment method or not\r",
+											"pm.test('Check there is only one default payment method or not', () => {\r",
+											"    const jsonData = JSON.parse(responseBody);\r",
+											"    let arr = []\r",
+											"    for (let i = 0; i < jsonData.data.length; i++) {\r",
+											"        arr.push(jsonData.data[i].default);\r",
+											"    }\r",
+											"    pm.expect(arr.filter(e => e == true).length == 1).to.be.true;\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/api/v4/payment-method",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"v4",
+										"payment-method"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Tag",
+					"item": [
+						{
+							"name": "Get Tag data",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/api/v4/tag",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"v4",
+										"tag"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "signup",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "first_name",
+									"value": "abc",
+									"type": "text"
+								},
+								{
+									"key": "last_name",
+									"value": "def",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "avishr44+12fd3@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "password",
+									"value": "1234567",
+									"type": "text"
+								},
+								{
+									"key": "mobile_number",
+									"value": "9758457845",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v4/auth/signup",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"auth",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Profile (Runner)",
+			"item": [
+				{
+					"name": "Forgot passoword Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check the status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"{{email}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v4/auth/forgot-password",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"auth",
+								"forgot-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.not.have.status(401);\r",
+									"});\r",
+									"pm.environment.set(\"access_token\", `Bearer ${jsonData.access_token}`);\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "client_id",
+									"value": "{{client_id}}",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "{{client_secret}}",
+									"type": "text"
+								},
+								{
+									"key": "grant_type",
+									"value": "{{grant_type}}",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "{{username}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "123456",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseURL}}/{{auth}}/login",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"{{auth}}",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Profile",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"pm.test('Check status code is not 401', () => {\r",
+									"    pm.response.to.not.have.status(401);    \r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/profile",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update user profile",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Set new values to old ones', () => {\r",
+									"    let newFirstName = pm.environment.get('new_first_name')\r",
+									"    let newLastName = pm.environment.get('new_last_name')\r",
+									"    let newMobileNumber = pm.environment.get('new_mobile_number')\r",
+									"\r",
+									"    //Set new first name, last name and mobile number in the old ones\r",
+									"    pm.environment.set(\"first_name\", newFirstName);\r",
+									"    pm.environment.set('last_name', newLastName);\r",
+									"    pm.environment.set('mobile_number', newMobileNumber);\r",
+									"})\r",
+									"pm.test('Check status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"pm.test('Check the updatedAt key of response', () => {\r",
+									"    const jsonData = JSON.parse(responseBody);\r",
+									"    const responseUpdatedAt = jsonData.data.updatedAt;\r",
+									"        let date = new Date();\r",
+									"        let monthsArray = [\"Jan\", \"Feb\", \"Mar\", \"Apr\", \"May\", \"Jun\", \"Jul\", \"Aug\", \"Sep\", \"Oct\", \"Nov\", \"Dec\"];\r",
+									"        //get the current month in string\r",
+									"        let actualMonth = monthsArray[date.getMonth()]\r",
+									"    let actualUpdatedAt = `${actualMonth} ${date.getDate()}, ${date.getFullYear()}`\r",
+									"    console.log(actualUpdatedAt);\r",
+									"    pm.expect(actualUpdatedAt).to.be.eq(responseUpdatedAt);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"first-name\": \"{{new_first_name}}\",\r\n    \"last-name\": \"{{new_last_name}}\",\r\n    \"mobile-number\": 9774547454\r\n }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v4/profile",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all profile info without hiding any info",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check if the user details is correct or not', () => {\r",
+									"    //Check full name\r",
+									"    const oldFullName = `${pm.environment.get('first_name')} ${pm.environment.get('last_name')}`\r",
+									"\r",
+									"    const jsonData = JSON.parse(responseBody);\r",
+									"    const actualFullName = `${jsonData.data.firstName} ${jsonData.data.lastName}`;\r",
+									"\r",
+									"    pm.expect(oldFullName).to.be.eq(actualFullName);\r",
+									"\r",
+									"    //Check mobile number\r",
+									"    const oldMobileNumber = pm.environment.get('mobile_number');\r",
+									"    const actualMobileNumber = jsonData.data.mobileNumber;\r",
+									"    pm.expect(oldMobileNumber).to.be.eq(actualMobileNumber);\r",
+									"})\r",
+									"\r",
+									"pm.test('Check the status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/profile/show",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"profile",
+								"show"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Image By Profile Id",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"pm.test('Status code is not 404', () => {\r",
+									"    pm.response.to.not.have.status(404);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": "IMG_Thu Apr 08 15_36_13 GMT+05_45 2021.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v4/profile/image",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"profile",
+								"image"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check status code is not 404', () => {\r",
+									"    pm.response.to.not.have.status(404);\r",
+									"})\r",
+									"\r",
+									"pm.test('Set the new password to the old one in the environment', () => {\r",
+									"    const newPassword = pm.environment.get('new_password');\r",
+									"    pm.environment.set('password', newPassword);\r",
+									"})\r",
+									"\r",
+									"pm.test('Check status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"new-password\": \"{{new_password}}\",\r\n    \"old-password\": \"{{password}}\",\r\n    \"confirm-password\": \"{{new_password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v4/profile/change-password",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"profile",
+								"change-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show all delivery address Copy 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"let jsonData = JSON.parse(responseBody);\r",
+									"pm.environment.set('address-id',jsonData.data[0].id)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/delivery-address",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"delivery-address"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Delivery Address Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check status code is 204 or not', () => {\r",
+									"    pm.response.to.have.status(204);\r",
+									"})\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/delivery-address/{{address-id}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"delivery-address",
+								"{{address-id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Delivery Address Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('check status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"{{delivery-title}}\",\r\n    \"latitude\": {{latitude}},\r\n    \"longitude\": {{longitude}},\r\n    \"customer\": \"kabina pradhan\",\r\n    \"contact_no\": \"9745412541\",\r\n    \"isDefault\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v4/delivery-address",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"delivery-address"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show all delivery address Copy 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"let jsonData = JSON.parse(responseBody);\r",
+									"pm.environment.set('address-id',jsonData.data[0].id)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/delivery-address",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"delivery-address"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show one delivery address by id Copy 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"let jsonData = JSON.parse(responseBody);\r",
+									"pm.test('Check the delivery title in the response', () => {\r",
+									"    pm.expect(jsonData.data.title).to.be.eq(pm.environment.get('delivery-title'));\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/delivery-address/{{address-id}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"delivery-address",
+								"{{address-id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Delivery Address Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check status code is 200',()=>{\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"let jsonData = JSON.parse(responseBody)\r",
+									"pm.environment.set('address-id',jsonData.data.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"{{new_delivery_title}}\",\r\n    \"latitude\": {{new_latitude}},\r\n    \"longitude\": {{new_longitude}},\r\n    \"customer\": \"kabina pradhan\",\r\n    \"contact_no\": \"9846512541\",\r\n    \"isDefault\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v4/delivery-address/{{address-id}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"delivery-address",
+								"{{address-id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show one delivery address by id Copy 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"let jsonData = JSON.parse(responseBody);\r",
+									"//Validate if the delivery address has been updated or not\r",
+									"\r",
+									"const oldDeliveryTitle = pm.environment.get('delivery-title');\r",
+									"const oldLatitude = pm.environment.get('latitude');\r",
+									"const oldLongitude = pm.environment.get('longitude');\r",
+									"\r",
+									"pm.test('Check if the delivery title has changed or not', () => {\r",
+									"    pm.expect(oldDeliveryTitle).to.not.eq(jsonData.data.title);\r",
+									"})\r",
+									"pm.test('Check if the latitude has changed or not', () => {\r",
+									"    pm.expect(oldLatitude).to.not.eq(jsonData.data.latitude);\r",
+									"})\r",
+									"pm.test('Check if the longitude has changed or not', () => {\r",
+									"    pm.expect(oldLongitude).to.not.eq(jsonData.data.longitude);\r",
+									"})\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/delivery-address/{{address-id}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"delivery-address",
+								"{{address-id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Favourite (Runner)",
+			"item": [
+				{
+					"name": "User login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.not.have.status(401);\r",
+									"});\r",
+									"pm.environment.set(\"access_token\", `Bearer ${jsonData.access_token}`);\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "client_id",
+									"value": "{{client_id}}",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "{{client_secret}}",
+									"type": "text"
+								},
+								{
+									"key": "grant_type",
+									"value": "{{grant_type}}",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "{{username}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseURL}}/{{auth}}/login",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"{{auth}}",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Site Configs Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonData = JSON.parse(responseBody);\r",
+									"console.log(jsonData.data.warehouse[0].id);\r",
+									"pm.environment.set('Warehouse-Id', jsonData.data.warehouse[0].id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/config",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"config"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Products Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test('Check if the status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"//Select random productId everytime\r",
+									"const productArray = jsonData.data;\r",
+									"const randomArrayElement = productArray[Math.floor(Math.random() * productArray.length)]\r",
+									"pm.environment.set('productId', randomArrayElement.id);\r",
+									"pm.environment.set('priceId', randomArrayElement.unitPrice[0].id);\r",
+									"console.log(randomArrayElement);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Warehouse-Id",
+								"value": "{{Warehouse-Id}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/product",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Favourite Products",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check if the status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"//Set total favourite products to the environment\r",
+									"const jsonData = JSON.parse(responseBody)\r",
+									"pm.environment.set('total_favourite_products', jsonData.data.length);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Warehouse-Id",
+								"value": "{{Warehouse-Id}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/favourite",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"favourite"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add favourite",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check status code is 200 or not', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"pm.test('Check status code is not 400', () => {\r",
+									"    pm.response.to.not.have.status(400);\r",
+									"})\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Warehouse-Id",
+								"value": "{{Warehouse-Id}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": \"{{productId}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v4/favourite",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"favourite"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Favourite Products Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check if the status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"let jsonData = JSON.parse(responseBody);\r",
+									"pm.environment.set('favourite-id', jsonData.data[0].id);\r",
+									"\r",
+									"//Check if the total favourite products has increased by one or not after adding a favourite product\r",
+									"/*pm.test('Check favourite products count', () => {\r",
+									"    const previousFavouriteProducts = pm.environment.get('total_favourite_products');\r",
+									"    const jsonData = JSON.parse(responseBody)\r",
+									"    const currentFavouriteProducts = jsonData.data.length;\r",
+									"    pm.expect(currentFavouriteProducts).to.be.eq(previousFavouriteProducts + 1);\r",
+									"    pm.environment.set('total_favourite_products',currentFavouriteProducts);\r",
+									"})*/"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Warehouse-Id",
+								"value": "{{Warehouse-Id}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/favourite",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"favourite"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete favourite by product Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check status code',()=>{\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"pm.test('Check alert message text',()=>{\r",
+									"    const jsonData = JSON.parse(responseBody);\r",
+									"    pm.expect(jsonData.title).to.be.eq('Favorite removed successfully')\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/favourite/{{favourite-id}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"favourite",
+								"{{favourite-id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Favourite Products Copy 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check if the status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"pm.environment.unset('favourite-id');\r",
+									"\r",
+									"//Check if the total favourite products has decreased by one or not after deleting a favourite product\r",
+									"/*pm.test('Check favourite products count', () => {\r",
+									"    const previousFavouriteProducts = pm.environment.get('total_favourite_products');\r",
+									"    const jsonData = JSON.parse(responseBody)\r",
+									"    const currentFavouriteProducts = jsonData.data.length;\r",
+									"    pm.expect(currentFavouriteProducts).to.be.eq(previousFavouriteProducts - 1);\r",
+									"    pm.environment.set('total_favourite_products',currentFavouriteProducts);\r",
+									"})\r",
+									"*/"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Warehouse-Id",
+								"value": "{{Warehouse-Id}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/favourite",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"favourite"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Favourite Product Id of User",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Warehouse-Id",
+								"value": "{{Warehouse-Id}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/favourite/products",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"favourite",
+								"products"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cart (Runner)",
+			"item": [
+				{
+					"name": "User login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.not.have.status(401);\r",
+									"});\r",
+									"pm.environment.set(\"access_token\", `Bearer ${jsonData.access_token}`);\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "maf3cxOCGz5XAx3YDkQbHfkoHOSJj85Xy9Rw9O1hZ06zdy4CZJ",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "Api-Key",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "client_id",
+									"value": "{{client_id}}",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "{{client_secret}}",
+									"type": "text"
+								},
+								{
+									"key": "grant_type",
+									"value": "{{grant_type}}",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "koklasstest@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseURL}}/{{auth}}/login",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"{{auth}}",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Site Configs",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonData = JSON.parse(responseBody);\r",
+									"console.log(jsonData.data.warehouse[0].id);\r",
+									"pm.environment.set('Warehouse-Id', jsonData.data.warehouse[0].id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/config",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"config"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add item to cart Copy 2",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check status codes', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"pm.test('Check status code is not 422', () => {\r",
+									"    pm.response.to.not.have.status(422)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Warehouse-Id",
+								"value": "{{Warehouse-Id}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"productId\": {{productId}},\r\n  \"priceId\": {{priceId}},\r\n  \"quantity\": \"{{product_quantity}}\",\r\n  \"note\": \"testing\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v4/cart-product",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"cart-product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete cart",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check the status code is 204', () => {\r",
+									"    pm.response.to.have.status(204);\r",
+									"})\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/cart",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"cart"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Products",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test('Check if the status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"pm.environment.set('productId', jsonData.data[1].id);\r",
+									"pm.environment.set('priceId', jsonData.data[1].unitPrice[0].id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Warehouse-Id",
+								"value": "{{Warehouse-Id}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/product",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"product"
+							],
+							"query": [
+								{
+									"key": "categoryId",
+									"value": "61",
+									"disabled": true
+								},
+								{
+									"key": "sortBy",
+									"value": "desc",
+									"disabled": true
+								},
+								{
+									"key": "allProduct",
+									"value": "1",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show all delivery address",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"let jsonData = JSON.parse(responseBody);\r",
+									"pm.environment.set(\"Delivery-Id\", jsonData.data[0].id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/delivery-address",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"delivery-address"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all payment methods",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check if the status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"let jsonData = JSON.parse(responseBody)\r",
+									"//Setting the payment method id of cash on delivery\r",
+									"pm.environment.set(\"PaymentMethod-Id\", jsonData.data[2].id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/payment-method",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"payment-method"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Cart Data Copy 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"let jsonData = JSON.parse(responseBody);\r",
+									"pm.environment.set('cartId',  jsonData.data.id);\r",
+									"//Set the current cart data count\r",
+									"pm.test('Set current cart data count', () => {\r",
+									"    let jsonData = JSON.parse(responseBody);\r",
+									"    pm.environment.set('cartCount', jsonData.data.cartProducts.length);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Warehouse-Id",
+								"value": "{{Warehouse-Id}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/cart",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"cart"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add item to cart",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Warehouse-Id",
+								"value": "{{Warehouse-Id}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"productId\": {{productId}},\r\n  \"priceId\": {{priceId}},\r\n  \"quantity\": \"{{product_quantity}}\",\r\n  \"note\": \"testing\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v4/cart-product",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"cart-product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Cart Data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"let jsonData = JSON.parse(responseBody);\r",
+									"pm.environment.set('cartId',  jsonData.data.id);\r",
+									"\r",
+									"//Check if the cartProducts count has increased by 1\r",
+									"pm.test('Check cartProducts count increased by 1', () => {\r",
+									"    let jsonData = JSON.parse(responseBody);\r",
+									"    let currentCartCount = jsonData.data.cartProducts.length;\r",
+									"    pm.expect(currentCartCount).to.be.eq(pm.environment.get('cartCount') + 1);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Warehouse-Id",
+								"value": "{{Warehouse-Id}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/cart",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"cart"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Checkout Cart",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check status codes', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"pm.test('Check status code is not 404', () => {\r",
+									"    pm.response.to.not.have.status(404)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "DeliveryId",
+								"value": "{{Delivery-Id}}",
+								"type": "text"
+							},
+							{
+								"key": "PaymentMethodId",
+								"value": "{{PaymentMethod-Id}}",
+								"type": "text"
+							},
+							{
+								"key": "Code",
+								"value": "userss",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/cart/checkout?note=hello cart api test",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"cart",
+								"checkout"
+							],
+							"query": [
+								{
+									"key": "note",
+									"value": "hello cart api test"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Bulk Cart Item",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"check status code\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"pm.test('Set the cartProductId to the environment', () => {\r",
+									"    let jsonData = JSON.parse(responseBody);\r",
+									"    if (jsonData.data.cartProducts.length > 0) {\r",
+									"        pm.environment.set('cartProductId', jsonData.data.cartProducts[0].id);\r",
+									"    }\r",
+									"    else {\r",
+									"        pm.environment.unset('cartProductId');\r",
+									"    }\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Warehouse-Id",
+								"value": "{{Warehouse-Id}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"data\": [\r\n    {\r\n      \"productId\": {{productId}},\r\n      \"priceId\": {{priceId}},\r\n      \"quantity\": \"{{product_quantity}}\",\r\n      \"note\": \"string\"\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v4/cart/bulk",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"cart",
+								"bulk"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Cart Products By cartProductId",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Check status code is 204\", () => {\r",
+									"    pm.response.to.have.status(204);\r",
+									"})\r",
+									"\r",
+									"pm.test('Check status code is not 404', () => {\r",
+									"    pm.response.to.not.have.status(404);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/cart-product/{{cartProductId}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"cart-product",
+								"{{cartProductId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add item to cart Copy",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Warehouse-Id",
+								"value": "{{Warehouse-Id}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"productId\": {{productId}},\r\n  \"priceId\": {{priceId}},\r\n  \"quantity\": \"{{product_quantity}}\",\r\n  \"note\": \"testing\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v4/cart-product",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"cart-product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Cart Data Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonData = JSON.parse(responseBody);\r",
+									"pm.environment.set('cartProductId', jsonData.data.cartProducts[0].id);\r",
+									"pm.environment.set('cartId',  jsonData.data.id)\r",
+									"pm.test('Check status codes', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"pm.test('Check status code is not 404', () => {\r",
+									"    pm.response.to.not.have.status(404)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Warehouse-Id",
+								"value": "{{Warehouse-Id}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/cart",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"cart"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Cart Product",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check the status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"pm.environment.set('product_quantity', 5);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set('product_quantity', 20);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Warehouse-Id",
+								"value": "{{Warehouse-Id}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"quantity\": \"{{product_quantity}}\",\r\n  \"note\": \"hello\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v4/cart-product/{{cartProductId}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"cart-product",
+								"{{cartProductId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "coupon",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Api-Key",
+								"value": "16c9c17b5f17cba2edd2981deb74a46d123a9848d443c9d59ea4231f54892ada3391542f48609387",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "cart-Id",
+								"value": "189",
+								"type": "text"
+							},
+							{
+								"key": "code",
+								"value": "123456",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/coupon/123456",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"coupon",
+								"123456"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Pickup",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "{{api_key}}",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "Api-Key",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"deliveryAddressId\": 474,\r\n  \"paymentMethodId\": 1,\r\n  \"outletId\":17,\r\n  \"couponCode\": \"\",\r\n  \"date\": \"2021-06-24\",\r\n  \"time\": \"15:00\",\r\n  \"pickup\": \"1\",\r\n  \"note\": \"pickup note\",\r\n  \"extra\": {\r\n    \"customerName\": \"@#$%^gfdfg\",\r\n    \"contactNo\": \"98745124\",\r\n    \"note\": \"order note\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v4/cart/checkout/pickup",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"cart",
+								"checkout",
+								"pickup"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "User login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.not.have.status(401);\r",
+									"});\r",
+									"pm.environment.set(\"access_token\", `Bearer ${jsonData.access_token}`);\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "client_id",
+									"value": "{{client_id}}",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "{{client_secret}}",
+									"type": "text"
+								},
+								{
+									"key": "grant_type",
+									"value": "{{grant_type}}",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "{{username}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseURL}}/{{auth}}/login",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"{{auth}}",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "refresh token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.not.have.status(401);\r",
+									"});\r",
+									"pm.environment.set(\"access_token\", `Bearer ${jsonData.access_token}`);\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "client_id",
+									"value": "{{client_id}}",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "{{client_secret}}",
+									"type": "text"
+								},
+								{
+									"key": "grant_type",
+									"value": "{{grant_type}}",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "{{username}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseURL}}/{{auth}}/login",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"{{auth}}",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User SignUp",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 201', () => {\r",
+									"    pm.response.to.have.status(201);\r",
+									"    pm.response.to.not.have.status(422);\r",
+									"})\r",
+									"\r",
+									"pm.test('Check if the first name and last name is correct or not', () => {\r",
+									"    let jsonBody = JSON.parse(responseBody);\r",
+									"    let firstName = pm.environment.get(\"first_name\");\r",
+									"    let lastName = pm.environment.get('last_name')\r",
+									"    pm.expect(jsonBody.data.firstName + jsonBody.data.lastName).to.be.eq(firstName + lastName);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "first_name",
+									"value": "{{first_name}}",
+									"type": "text"
+								},
+								{
+									"key": "last_name",
+									"value": "{{last_name}}",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "{{username}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "text"
+								},
+								{
+									"key": "mobile_number",
+									"value": "{{mobile_number}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseURL}}/{{auth}}/signup",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"{{auth}}",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check the status codes', () => {\r",
+									"    pm.response.to.have.status(204);\r",
+									"    pm.response.to.not.have.status(401);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/{{auth}}/logout",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"{{auth}}",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Delivery Address",
+			"item": [
+				{
+					"name": "User login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.not.have.status(401);\r",
+									"});\r",
+									"pm.environment.set(\"access_token\", `Bearer ${jsonData.access_token}`);\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "client_id",
+									"value": "{{client_id}}",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "{{client_secret}}",
+									"type": "text"
+								},
+								{
+									"key": "grant_type",
+									"value": "{{grant_type}}",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "{{username}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseURL}}/{{auth}}/login",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"{{auth}}",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show all delivery address",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"let jsonData = JSON.parse(responseBody);\r",
+									"pm.environment.set('address-id',jsonData.data[0].id)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/delivery-address",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"delivery-address"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Delivery Address",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check status code is 204 or not', () => {\r",
+									"    pm.response.to.have.status(204);\r",
+									"})\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/delivery-address/{{address-id}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"delivery-address",
+								"{{address-id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Delivery Address",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('check status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"{{delivery-title}}\",\r\n    \"latitude\": {{latitude}},\r\n    \"longitude\": {{longitude}},\r\n    \"isDefault\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v4/delivery-address",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"delivery-address"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show all delivery address Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"let jsonData = JSON.parse(responseBody);\r",
+									"pm.environment.set('address-id',jsonData.data[0].id)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/delivery-address",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"delivery-address"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show one delivery address by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"let jsonData = JSON.parse(responseBody);\r",
+									"pm.test('Check the delivery title in the response', () => {\r",
+									"    pm.expect(jsonData.data.title).to.be.eq(pm.environment.get('delivery-title'));\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/delivery-address/{{address-id}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"delivery-address",
+								"{{address-id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Delivery Address",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check status code is 200',()=>{\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"let jsonData = JSON.parse(responseBody)\r",
+									"pm.environment.set('address-id',jsonData.data.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"{{new_delivery_title}}\",\r\n    \"latitude\": {{new_latitude}},\r\n    \"longitude\": {{new_longitude}},\r\n    \"isDefault\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v4/delivery-address/{{address-id}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"delivery-address",
+								"{{address-id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show one delivery address by id Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"let jsonData = JSON.parse(responseBody);\r",
+									"//Validate if the delivery address has been updated or not\r",
+									"\r",
+									"const oldDeliveryTitle = pm.environment.get('delivery-title');\r",
+									"const oldLatitude = pm.environment.get('latitude');\r",
+									"const oldLongitude = pm.environment.get('longitude');\r",
+									"\r",
+									"pm.test('Check if the delivery title has changed or not', () => {\r",
+									"    pm.expect(oldDeliveryTitle).to.not.eq(jsonData.data.title);\r",
+									"})\r",
+									"pm.test('Check if the latitude has changed or not', () => {\r",
+									"    pm.expect(oldLatitude).to.not.eq(jsonData.data.latitude);\r",
+									"})\r",
+									"pm.test('Check if the longitude has changed or not', () => {\r",
+									"    pm.expect(oldLongitude).to.not.eq(jsonData.data.longitude);\r",
+									"})\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/delivery-address/{{address-id}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"delivery-address",
+								"{{address-id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Login",
+			"item": [
+				{
+					"name": "Forgot passoword",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check the status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"{{email}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v4/auth/forgot-password",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"auth",
+								"forgot-password"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Page",
+			"item": [
+				{
+					"name": "Get Page data",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/page/privacy-policy",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"page",
+								"privacy-policy"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Banner",
+			"item": [
+				{
+					"name": "Get Site Config Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonData = JSON.parse(responseBody);\r",
+									"console.log(jsonData.data.warehouse[0].id);\r",
+									"\r",
+									"//set warehouse id\r",
+									"pm.environment.set('Warehouse-Id', jsonData.data.warehouse[0].id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/config",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"config"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Banner info",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Warehouse-Id",
+								"value": "{{Warehouse-Id}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/banner?type=home",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"banner"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "home"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Order",
+			"item": [
+				{
+					"name": "User login Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.not.have.status(401);\r",
+									"});\r",
+									"pm.environment.set(\"access_token\", `Bearer ${jsonData.access_token}`);\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "client_id",
+									"value": "{{client_id}}",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "{{client_secret}}",
+									"type": "text"
+								},
+								{
+									"key": "grant_type",
+									"value": "{{grant_type}}",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "{{username}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseURL}}/{{auth}}/login",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"{{auth}}",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All user order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Set The order id to the environment', () => {\r",
+									"\r",
+									"    let jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"    if (jsonData.data.length > 0) {\r",
+									"        pm.environment.set('orderId', jsonData.data[0].id);\r",
+									"    }\r",
+									"    else {\r",
+									"        pm.environment.unset('orderId');\r",
+									"    }\r",
+									"})\r",
+									"\r",
+									"pm.test('Check the status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/order",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"order"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get order by orderID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/order/{{orderId}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"order",
+								"{{orderId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "guest login",
+			"item": [
+				{
+					"name": "Get Cart Data Copy 3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"//Set the current cart data count\r",
+									"pm.test('Set current cart data count', () => {\r",
+									"    let jsonData = JSON.parse(responseBody);\r",
+									"    pm.environment.set('cartCount', jsonData.data.cartProducts.length);\r",
+									"})\r",
+									"//add cart numbber\r",
+									"//Set the current cart data count\r",
+									"pm.test('Set current cart data count', () => {\r",
+									"    let jsonData = JSON.parse(responseBody);\r",
+									"    pm.environment.set('cartNumber', jsonData.data.cartNumber);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Warehouse-Id",
+								"value": "{{Warehouse-Id}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/cart",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"cart"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Products Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test('Check if the status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"pm.environment.set('productId', jsonData.data[1].id);\r",
+									"pm.environment.set('priceId', jsonData.data[1].unitPrice[0].id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Warehouse-Id",
+								"type": "text",
+								"value": "{{Warehouse-Id}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/product",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add item to cart Copy 3",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{access_token}}",
+								"disabled": true
+							},
+							{
+								"key": "Warehouse-Id",
+								"type": "text",
+								"value": "{{Warehouse-Id}}"
+							},
+							{
+								"key": "Cart-Number",
+								"value": "{{cartNumber}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"productId\": {{productId}},\r\n  \"priceId\": {{priceId}},\r\n  \"quantity\": \"10\",\r\n  \"note\": \"testing\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v4/cart-product",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"cart-product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Cart Data Copy 4",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"//Set the current cart data count\r",
+									"pm.test('Set current cart data count', () => {\r",
+									"    let jsonData = JSON.parse(responseBody);\r",
+									"    pm.environment.set('cartCount', jsonData.data.cartProducts.length);\r",
+									"})\r",
+									"//add cart numbber\r",
+									"//Set the current cart data count\r",
+									"pm.test('Set current cart data count', () => {\r",
+									"    let jsonData = JSON.parse(responseBody);\r",
+									"    pm.environment.set('cartNumber', jsonData.data.cartNumber);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Warehouse-Id",
+								"value": "{{Warehouse-Id}}",
+								"type": "text"
+							},
+							{
+								"key": "Cart-Number",
+								"value": "{{cartNumber}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/cart",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"cart"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Products Copy 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test('Check if the status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"pm.environment.set('productId2', jsonData.data[2].id);\r",
+									"pm.environment.set('priceId2', jsonData.data[2].unitPrice[0].id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Warehouse-Id",
+								"value": "{{Warehouse-Id}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/product",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add item to cart Copy 4",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Warehouse-Id",
+								"value": "{{Warehouse-Id}}",
+								"type": "text"
+							},
+							{
+								"key": "Cart-Number",
+								"value": "{{cartNumber}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"productId\": {{productId}},\r\n  \"priceId\": {{priceId}},\r\n  \"quantity\": \"{{product_quantity}}\",\r\n  \"note\": \"testing\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v4/cart-product",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"cart-product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Cart Data Copy 5",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"//Set the current cart data count\r",
+									"pm.test('Set current cart data count', () => {\r",
+									"    let jsonData = JSON.parse(responseBody);\r",
+									"    pm.environment.set('cartCount', jsonData.data.cartProducts.length);\r",
+									"})\r",
+									"//add cart numbber\r",
+									"//Set the current cart data count\r",
+									"pm.test('Set current cart data count', () => {\r",
+									"    let jsonData = JSON.parse(responseBody);\r",
+									"    pm.environment.set('cartProductId', jsonData.data.cartProducts[0].id);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Warehouse-Id",
+								"value": "{{Warehouse-Id}}",
+								"type": "text"
+							},
+							{
+								"key": "Cart-Number",
+								"value": "{{cartNumber}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/cart",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"cart"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User login Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.not.have.status(401);\r",
+									"});\r",
+									"pm.environment.set(\"access_token\", `Bearer ${jsonData.access_token}`);\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "client_id",
+									"value": "{{client_id}}",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "{{client_secret}}",
+									"type": "text"
+								},
+								{
+									"key": "grant_type",
+									"value": "{{grant_type}}",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "{{username}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseURL}}/{{auth}}/login",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"{{auth}}",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "associate",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"//Set the current cart data count\r",
+									"pm.test('Set current cart data count', () => {\r",
+									"    let jsonData = JSON.parse(responseBody);\r",
+									"    pm.environment.set('cartCount', jsonData.data.cartProducts.length);\r",
+									"})\r",
+									"//add cart numbber\r",
+									"//Set the current cart data count\r",
+									"pm.test('Set current cart data count', () => {\r",
+									"    let jsonData = JSON.parse(responseBody);\r",
+									"    pm.environment.set('cartNumber', jsonData.data.cartNumber);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Warehouse-Id",
+								"value": "{{Warehouse-Id}}",
+								"type": "text"
+							},
+							{
+								"key": "Cart-Number",
+								"value": "{{cartNumber}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/cart/associate",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"cart",
+								"associate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send Verification mail Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", ()=>{\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.not.have.status(401);\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\":\"{{username}}\",\r\n  \"mobile_number\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v4/verify/email",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"verify",
+								"email"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verify User Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Status code is 200\",()=>{\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.not.have.status(401);\r",
+									"    \r",
+									"    if(pm.response.code===200){\r",
+									"        pm.test(\"Body matches string\", function () {\r",
+									"            pm.expect(jsonData.data.success.message).to.eql(\"User has been verified\");\r",
+									"        });\r",
+									"    } \r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"token\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v4/verify",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"verify"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Cart Data Copy 6",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"//Set the current cart data count\r",
+									"pm.test('Set current cart data count', () => {\r",
+									"    let jsonData = JSON.parse(responseBody);\r",
+									"    pm.environment.set('cartCount', jsonData.data.cartProducts.length);\r",
+									"})\r",
+									"//add cart numbber\r",
+									"//Set the current cart data count\r",
+									"pm.test('Set current cart data count', () => {\r",
+									"    let jsonData = JSON.parse(responseBody);\r",
+									"    pm.environment.set('cartNumber', jsonData.data.cartNumber);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Warehouse-Id",
+								"value": "{{Warehouse-Id}}",
+								"type": "text"
+							},
+							{
+								"key": "Cart-Number",
+								"value": "{{cartNumber}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/cart",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"cart"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Checkout Cart Copy",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check status codes', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"pm.test('Check status code is not 404', () => {\r",
+									"    pm.response.to.not.have.status(404)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "DeliveryId",
+								"value": "{{Delivery-Id}}",
+								"type": "text"
+							},
+							{
+								"key": "PaymentMethodId",
+								"value": "{{PaymentMethod-Id}}",
+								"type": "text"
+							},
+							{
+								"key": "note",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Code",
+								"value": "laptop",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/cart/checkout",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"cart",
+								"checkout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "guest Signup",
+			"item": [
+				{
+					"name": "Site Configs Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonData = JSON.parse(responseBody);\r",
+									"console.log(jsonData.data.warehouse[0].id);\r",
+									"pm.environment.set('Warehouse-Id', jsonData.data.warehouse[0].id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/config",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"config"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Cart Data Copy 3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"//Set the current cart data count\r",
+									"pm.test('Set current cart data count', () => {\r",
+									"    let jsonData = JSON.parse(responseBody);\r",
+									"    pm.environment.set('cartCount', jsonData.data.cartProducts.length);\r",
+									"})\r",
+									"//add cart numbber\r",
+									"//Set the current cart data count\r",
+									"pm.test('Set current cart data count', () => {\r",
+									"    let jsonData = JSON.parse(responseBody);\r",
+									"    pm.environment.set('cartNumber', jsonData.data.cartNumber);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Warehouse-Id",
+								"value": "{{Warehouse-Id}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/cart",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"cart"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Products Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test('Check if the status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"pm.environment.set('productId', jsonData.data[1].id);\r",
+									"pm.environment.set('priceId', jsonData.data[1].unitPrice[0].id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Warehouse-Id",
+								"type": "text",
+								"value": "1"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/product",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add item to cart Copy 3",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{access_token}}",
+								"disabled": true
+							},
+							{
+								"key": "Warehouse-Id",
+								"type": "text",
+								"value": "{{Warehouse-Id}}"
+							},
+							{
+								"key": "Cart-Number",
+								"value": "{{cartNumber}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"productId\": {{productId}},\r\n  \"priceId\": {{priceId}},\r\n  \"quantity\": \"{{product_quantity}}\",\r\n  \"note\": \"testing\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v4/cart-product",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"cart-product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Cart Data Copy 4",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"//Set the current cart data count\r",
+									"pm.test('Set current cart data count', () => {\r",
+									"    let jsonData = JSON.parse(responseBody);\r",
+									"    pm.environment.set('cartCount', jsonData.data.cartProducts.length);\r",
+									"})\r",
+									"//add cart numbber\r",
+									"//Set the current cart data count\r",
+									"pm.test('Set current cart data count', () => {\r",
+									"    let jsonData = JSON.parse(responseBody);\r",
+									"    pm.environment.set('cartNumber', jsonData.data.cartNumber);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Warehouse-Id",
+								"value": "{{Warehouse-Id}}",
+								"type": "text"
+							},
+							{
+								"key": "Cart-Number",
+								"value": "{{cartNumber}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/cart",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"cart"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Products Copy 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test('Check if the status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"pm.environment.set('productId2', jsonData.data[2].id);\r",
+									"pm.environment.set('priceId2', jsonData.data[2].unitPrice[0].id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Warehouse-Id",
+								"value": "{{Warehouse-Id}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/product",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add item to cart Copy 4",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Warehouse-Id",
+								"value": "{{Warehouse-Id}}",
+								"type": "text"
+							},
+							{
+								"key": "Cart-Number",
+								"value": "{{cartNumber}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"productId\": {{productId}},\r\n  \"priceId\": {{priceId}},\r\n  \"quantity\": \"{{product_quantity}}\",\r\n  \"note\": \"testing\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v4/cart-product",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"cart-product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Cart Data Copy 5",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"//Set the current cart data count\r",
+									"pm.test('Set current cart data count', () => {\r",
+									"    let jsonData = JSON.parse(responseBody);\r",
+									"    pm.environment.set('cartCount', jsonData.data.cartProducts.length);\r",
+									"})\r",
+									"//add cart numbber\r",
+									"//Set the current cart data count\r",
+									"pm.test('Set current cart data count', () => {\r",
+									"    let jsonData = JSON.parse(responseBody);\r",
+									"    pm.environment.set('cartProductId', jsonData.data.cartProducts[0].id);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Warehouse-Id",
+								"value": "{{Warehouse-Id}}",
+								"type": "text"
+							},
+							{
+								"key": "Cart-Number",
+								"value": "{{cartNumber}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/cart",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"cart"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Guest signup",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"pm.test(\"Status code is 200\", () => {",
+									"    pm.response.to.have.status(200);",
+									"    pm.response.to.not.have.status(401);",
+									"});",
+									"pm.environment.set(\"access_token\", `Bearer ${jsonData.access_token}`);",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cart-Number",
+								"value": "{{cartNumber}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "first_name",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "last_name",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "email",
+									"value": "avishr44+993@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "password",
+									"value": "123456",
+									"type": "text"
+								},
+								{
+									"key": "mobile_number",
+									"value": "9873453450",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v4/guest/auth/signup",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"guest",
+								"auth",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Cart Data Copy 6",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"//Set the current cart data count\r",
+									"pm.test('Set current cart data count', () => {\r",
+									"    let jsonData = JSON.parse(responseBody);\r",
+									"    pm.environment.set('cartCount', jsonData.data.cartProducts.length);\r",
+									"})\r",
+									"//add cart numbber\r",
+									"//Set the current cart data count\r",
+									"pm.test('Set current cart data count', () => {\r",
+									"    let jsonData = JSON.parse(responseBody);\r",
+									"    pm.environment.set('cartNumber', jsonData.data.cartNumber);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Warehouse-Id",
+								"value": "{{Warehouse-Id}}",
+								"type": "text"
+							},
+							{
+								"key": "Cart-Number",
+								"value": "{{cartNumber}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/cart",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"cart"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Loyalty",
+			"item": [
+				{
+					"name": "User login Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.not.have.status(401);\r",
+									"});\r",
+									"pm.environment.set(\"access_token\", `Bearer ${jsonData.access_token}`);\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "client_id",
+									"value": "{{client_id}}",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "{{client_secret}}",
+									"type": "text"
+								},
+								{
+									"key": "grant_type",
+									"value": "{{grant_type}}",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "koklasstest@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "123456",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseURL}}/{{auth}}/login",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"{{auth}}",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Total Loyalty Points Of User",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/loyalty",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"loyalty"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Loyalty History Of User",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "perPage",
+								"value": "20",
+								"type": "text"
+							},
+							{
+								"key": "page",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/loyalty/history",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"loyalty",
+								"history"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Redeem",
+			"item": [
+				{
+					"name": "User login Copy 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.not.have.status(401);\r",
+									"});\r",
+									"pm.environment.set(\"access_token\", `Bearer ${jsonData.access_token}`);\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "{{api_key}}",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "Api-Key",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "client_id",
+									"value": "{{client_id}}",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "{{client_secret}}",
+									"type": "text"
+								},
+								{
+									"key": "grant_type",
+									"value": "{{grant_type}}",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "koklasstest@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "123456",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseURL}}/{{auth}}/login",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"{{auth}}",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Redeem Product Data",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/redeemProduct",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"redeemProduct"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post User Redeem",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"product_id\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v4/redeemProduct",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"redeemProduct"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Redeem History",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/redeemHistory",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"redeemHistory"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Notification",
+			"item": [
+				{
+					"name": "Push Notification",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/pushnotifications",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"pushnotifications"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Services",
+			"item": [
+				{
+					"name": "catering form",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "{{api_key}}",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "Api-Key",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Warehouse-Id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"firstName\": \"kabina\",\r\n  \"middleName\": \"\",\r\n  \"lastName\": \"postman\",\r\n  \"contactNo\": \"9854564645\",\r\n  \"email\": \"kabinapradhan19@gmail.com\",\r\n  \"address\": \"samakhusi\",\r\n  \"date\": \"2021-06-18\",\r\n  \"noOfGuest\": {\r\n    \"adult\": 0,\r\n    \"child\": 8\r\n  },\r\n  \"gender\": \"Female\",\r\n  \"cateringMenu\": \"indian,chinese,continental,kids friendly,nepali\",\r\n  \"eventName\": \"party\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v4/catering-form",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"catering-form"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "meal box",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "{{api_key}}",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "Api-Key",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Warehouse-Id",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"firstName\": \"Kabina\",\r\n  \"middleName\": \"\",\r\n  \"lastName\": \"postman\",\r\n  \"contactNo\": \"9874512478\",\r\n  \"email\": \"kabinapradhan19@gmail.com\",\r\n  \"deliveryLocation\": \"samakhusi\",\r\n  \"date\": \"2021-06-25\",\r\n  \"deliveryTime\": \"11:00\",\r\n  \"comment\": \"hello there\",\r\n  \"boxMenu\": {\r\n    \"veg\": 1,\r\n    \"nonVeg\": 0,\r\n    \"kidsMeal\": 5\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v4/meal-box",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"meal-box"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Coupon",
+			"item": [
+				{
+					"name": "Get all coupon",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/coupon",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"coupon"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "apply coupon",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Cart-Id",
+								"value": "{{cartId}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/coupon/flat100",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"coupon",
+								"flat100"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Prescription upload Copy",
+			"item": [
+				{
+					"name": "User login Copy 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.not.have.status(401);\r",
+									"});\r",
+									"pm.environment.set(\"access_token\", `Bearer ${jsonData.access_token}`);\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "client_id",
+									"value": "{{client_id}}",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "{{client_secret}}",
+									"type": "text"
+								},
+								{
+									"key": "grant_type",
+									"value": "{{grant_type}}",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "{{username}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseURL}}/{{auth}}/login",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"{{auth}}",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "prescription upload Copy",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Warehouse-Id",
+								"value": "1",
+								"type": "text"
+							},
+							{
+								"key": "images",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "remarks",
+									"value": "medfirsr check sis user",
+									"type": "text"
+								},
+								{
+									"key": "details[name]",
+									"value": "Sis maharjan",
+									"type": "text"
+								},
+								{
+									"key": "details[address]",
+									"value": "jwagal",
+									"type": "text"
+								},
+								{
+									"key": "details[mobile_number]",
+									"value": "9898989988",
+									"type": "text"
+								},
+								{
+									"key": "images[0]",
+									"type": "file",
+									"src": "78Wk60Zm2/admin_logo_short.png"
+								},
+								{
+									"key": "details[medicine_data][0][medicine]",
+									"value": "Paracetamol",
+									"type": "text"
+								},
+								{
+									"key": "details[medicine_data][0][quantity]",
+									"value": "4",
+									"type": "text"
+								},
+								{
+									"key": "details[medicine_data][1][medicine]",
+									"value": "Seloken",
+									"type": "text"
+								},
+								{
+									"key": "details[medicine_data][1][quantity]",
+									"value": "3",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v4/prescription/uploads",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"prescription",
+								"uploads"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "refresh token",
+			"item": [
+				{
+					"name": "User login Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.not.have.status(401);\r",
+									"});\r",
+									"pm.environment.set(\"access_token\", `Bearer ${jsonData.access_token}`);\r",
+									"pm.environment.set(\"refresh_token\",  jsonData.refresh_token);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "client_id",
+									"value": "{{client_id}}",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "{{client_secret}}",
+									"type": "text"
+								},
+								{
+									"key": "grant_type",
+									"value": "{{grant_type}}",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "{{username}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseURL}}/{{auth}}/login",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"{{auth}}",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User login with refresh token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.not.have.status(401);\r",
+									"});\r",
+									"pm.environment.set(\"access_token\", `Bearer ${jsonData.access_token}`);\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "client_id",
+									"value": "{{client_id}}",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "{{client_secret}}",
+									"type": "text"
+								},
+								{
+									"key": "grant_type",
+									"value": "refresh_token",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "{{username}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "text"
+								},
+								{
+									"key": "refresh_token",
+									"value": "{{refresh_token}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseURL}}/{{auth}}/login",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"{{auth}}",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Feedback",
+			"item": [
+				{
+					"name": "post feedback",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"kabina\",\r\n  \"contact\": \"9864565478\",\r\n  \"subject\": \"app\",\r\n  \"email\": \"kabina@gmail.com\",\r\n  \"message\": \"hello this is from postman (testing purpose)\",\r\n  \"section\": \"string\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v4/feedback",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"feedback"
+							],
+							"query": [
+								{
+									"key": "body",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Rating",
+			"item": [
+				{
+					"name": "Rating",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"category_id\": 30,\r\n  \"rating\": 3,\r\n  \"review\": \"I love this restaurant\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v4/rating",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"rating"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "tag",
+			"item": [
+				{
+					"name": "tag",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/tag",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"tag"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User Verification",
+			"item": [
+				{
+					"name": "User login Copy 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.not.have.status(401);\r",
+									"});\r",
+									"pm.environment.set(\"access_token\", `Bearer ${jsonData.access_token}`);\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "{{api_key}}",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "Api-Key",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "client_id",
+									"value": "{{client_id}}",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "{{client_secret}}",
+									"type": "text"
+								},
+								{
+									"key": "grant_type",
+									"value": "{{grant_type}}",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "{{username}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "123456",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseURL}}/{{auth}}/login",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"{{auth}}",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send Verification mail",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", ()=>{\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.not.have.status(401);\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\":\"{{username}}\",\r\n  \"mobile_number\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v4/verify/email",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"verify",
+								"email"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verify User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Status code is 200\",()=>{\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.not.have.status(401);\r",
+									"    \r",
+									"    if(pm.response.code===200){\r",
+									"        pm.test(\"Body matches string\", function () {\r",
+									"            pm.expect(jsonData.data.success.message).to.eql(\"User has been verified\");\r",
+									"        });\r",
+									"    } \r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "// {\r\n//   \"token\": \"{{verification_token}}\"\r\n// }\r\n{\r\n  \"token\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v4/verify",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"verify"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Api Management Copy",
+			"item": [
+				{
+					"name": "Site Configs Copy 3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonData = JSON.parse(responseBody);\r",
+									"console.log(jsonData.data.warehouse[0].id);\r",
+									"pm.environment.set('Warehouse-Id', jsonData.data.warehouse[0].id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Api-key",
+								"value": "c8b88df3713bc7919189768ef9e1a15178a81c33803301fc991a0a17f118839e",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "demo-newscollector.ekbana.xyz/api/v4/config",
+							"host": [
+								"demo-newscollector",
+								"ekbana",
+								"xyz"
+							],
+							"path": [
+								"api",
+								"v4",
+								"config"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Homepage Info Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"const jsonData = JSON.parse(responseBody);\r",
+									"if (jsonData.home.appCategories.length > 0) {\r",
+									"    console.log('There is at lease one active app category')\r",
+									"    pm.environment.set('appCategory-id', jsonData.home.appCategories[0].id);\r",
+									"}\r",
+									"else {\r",
+									"    console.log('There are not active app category present');\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Warehouse-Id",
+								"type": "text",
+								"value": "{{Warehouse-Id}}"
+							},
+							{
+								"key": "Api-key",
+								"value": "319fa7a80118b53189186d5d30cc8acfe3a17677fa9853a11101071139387d17",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "demo-newscollector.ekbana.xyz/api/v4/home",
+							"host": [
+								"demo-newscollector",
+								"ekbana",
+								"xyz"
+							],
+							"path": [
+								"api",
+								"v4",
+								"home"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "product",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"const jsonData = JSON.parse(responseBody);\r",
+									"if (jsonData.home.appCategories.length > 0) {\r",
+									"    console.log('There is at lease one active app category')\r",
+									"    pm.environment.set('appCategory-id', jsonData.home.appCategories[0].id);\r",
+									"}\r",
+									"else {\r",
+									"    console.log('There are not active app category present');\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Warehouse-Id",
+								"type": "text",
+								"value": "{{Warehouse-Id}}"
+							},
+							{
+								"key": "Api-key",
+								"value": "319fa7a80118b53189186d5d30cc8acfe3a17677fa9853a11101071139387d17",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "demo-newscollector.ekbana.xyz/api/v4/home",
+							"host": [
+								"demo-newscollector",
+								"ekbana",
+								"xyz"
+							],
+							"path": [
+								"api",
+								"v4",
+								"home"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Contact Us",
+			"item": [
+				{
+					"name": "Post Contact Us",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Warehouse-Id",
+								"value": "{{Warehouse-Id}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"message\": \"hekljdk jakjsdakj jdksjadkasd\",\r\n  \"subject\": \"Web\",\r\n  \"email\": \"koklasstest@gmail.com\",\r\n  \"name\": \"Neeki Pradhan\",\r\n  \"contact\": \"9898999989\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v4/contact-us",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"contact-us"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Blog",
+			"item": [
+				{
+					"name": "Get all Blogs",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Warehouse-Id",
+								"value": "{{Warehouse-Id}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/blog",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"blog"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Subscription",
+			"item": [
+				{
+					"name": "User login Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.not.have.status(401);\r",
+									"});\r",
+									"pm.environment.set(\"access_token\", `Bearer ${jsonData.access_token}`);\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "client_id",
+									"value": "{{client_id}}",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "{{client_secret}}",
+									"type": "text"
+								},
+								{
+									"key": "grant_type",
+									"value": "{{grant_type}}",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "{{username}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "123456",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseURL}}/{{auth}}/login",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"{{auth}}",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Subscription List",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"let jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.environment.set(\"subscription_id\", jsonData.data[0].id );"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Warehouse-Id",
+								"value": "{{Warehouse-Id}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/subscription-list",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"subscription-list"
+							],
+							"query": [
+								{
+									"key": "perPage",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Subscription by Id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Warehouse-Id",
+								"value": "5",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/subscription-list/5",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"subscription-list",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show all delivery address Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"let jsonData = JSON.parse(responseBody);\r",
+									"pm.environment.set(\"Delivery-Id\", jsonData.data[0].id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/delivery-address",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"delivery-address"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all payment methods Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check if the status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"let jsonData = JSON.parse(responseBody)\r",
+									"//Setting the payment method id of cash on delivery\r",
+									"pm.environment.set(\"PaymentMethod-Id\", jsonData.data[2].id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/payment-method",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"payment-method"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Checkout Subscription List",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "DeliveryId",
+								"value": "{{Delivery-Id}}",
+								"type": "text"
+							},
+							{
+								"key": "PaymentMethodId",
+								"value": "{{PaymentMethod-Id}}",
+								"type": "text"
+							},
+							{
+								"key": "SubscriptionId",
+								"value": "5",
+								"type": "text"
+							},
+							{
+								"key": "Warehouse-Id",
+								"value": "{{Warehouse-Id}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"total\": 1320,\r\n  \"subscriptionProducts\": [\r\n    {\r\n      \"selectedUnitId\": 94,\r\n      \"quantity\": 1\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v4/subscription-list/checkout",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"subscription-list",
+								"checkout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All user order Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Set The order id to the environment', () => {\r",
+									"\r",
+									"    let jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"    if (jsonData.data.length > 0) {\r",
+									"        pm.environment.set('orderId', jsonData.data[0].id);\r",
+									"    }\r",
+									"    else {\r",
+									"        pm.environment.unset('orderId');\r",
+									"    }\r",
+									"})\r",
+									"\r",
+									"pm.test('Check the status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/order",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"order"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get order by orderID Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Check status code is 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/api/v4/order/{{orderId}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v4",
+								"order",
+								"{{orderId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "value",
+				"value": "{{api-key}}",
+				"type": "string"
+			},
+			{
+				"key": "in",
+				"value": "header",
+				"type": "string"
+			},
+			{
+				"key": "key",
+				"value": "Api-Key",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"if(pm.response.code!==204) {",
+					"    let jsonData = JSON.parse(responseBody);",
+					"    if(pm.response.code === 200) {",
+					"        pm.test('response should have required key for success',()=>{",
+					"        console.log(JSON.parse(responseBody))",
+					"        pm.expect(JSON.parse(responseBody)).to.have.all.keys('meta','data','code');",
+					"    })",
+					"    }",
+					"    else{",
+					"        pm.test('response should have required key for error',()=>{",
+					"        pm.expect(JSON.parse(responseBody)).to.have.all.keys('meta','errors','code');",
+					"        pm.expect(JSON.parse(responseBody).errors[0]).to.have.all.keys('title','message');",
+					"    })",
+					"    }",
+					"",
+					"    pm.test('Status code should not be 500',() =>{",
+					"        pm.response.to.not.have.status(500);",
+					"    })",
+					"}"
+				]
+			}
+		}
+	]
+}
