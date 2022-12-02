@@ -4,7 +4,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import BreadCrumbs from "../BreadCrumbs/BreadCrumbs";
 import { Link } from "react-router-dom";
 import { useFormik } from "formik";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { loginToken } from "../../Redux/Login/LoginAction";
 
 function Login() {
   /*login css */
@@ -20,10 +21,7 @@ function Login() {
   /*login css */
 
   const [success, setSuccess] = useState("");
-  const [token, setToken] = useState("");
-
-  useSelector((state) => (state.token = token));
-
+  const dispatch = useDispatch();
   /*form validation*/
   const validate = (values) => {
     const errors = {};
@@ -82,12 +80,13 @@ function Login() {
           return response.json();
         })
 
-        .then((result) => setToken(result.access_token))
+        .then((result) => dispatch(loginToken(result.access_token)))
         .then((result) => setSuccess("successfully logged in"))
 
         .catch((error) => setSuccess(error.message));
     },
   });
+  useSelector((state) => console.log(state));
   /*form validation*/
   return (
     <div>
